@@ -11,12 +11,11 @@
     ondsel-feedstock.flake = false;
   };
 
-  outputs = { nixpkgs, ... }@inputs: {
+  outputs = {nixpkgs, ...} @ inputs: {
     packages = builtins.listToAttrs (map
       (system: {
         name = system;
-        value = with import nixpkgs { inherit system; }; rec {
-
+        value = with import nixpkgs {inherit system;}; rec {
           # ondsel-app = appimageTools.wrapType2 {
           #   name = "ondsel";
           #   src = inputs."ondsel-appimage-${system}";
@@ -25,8 +24,9 @@
           default = ondsel;
 
           ondsel = pkgs.libsForQt5.callPackage ./ondsel.nix {
-            boost = python3Packages.boost;
-            inherit (python3Packages)
+            boost = python311Packages.boost;
+            inherit
+              (python311Packages)
               gitpython
               matplotlib
               pivy
@@ -37,10 +37,10 @@
               python
               pyyaml
               scipy
-              shiboken2;
+              shiboken2
+              ;
           };
-
         };
-      }) [ "x86_64-linux" "aarch64-linux" ]);
+      }) ["x86_64-linux" "aarch64-linux"]);
   };
 }
